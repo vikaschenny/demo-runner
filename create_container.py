@@ -1,3 +1,4 @@
+#!/usr/bin/python
 import subprocess
 import json
 
@@ -6,7 +7,9 @@ def spin_container(host):
     container_id = subprocess.check_output(['docker', 'run', '-d', '-it', 'demo-runner:1.0']).strip().decode()
 
     # Run playbook inside the container using Ansible runner
-    ansible_command = f'docker exec {container_id} ansible-runner run /opt/demo-runner/logs.yaml'
+#   ansible_command = f'docker exec {container_id} ansible-runner run /opt/demo-runner/logs.yaml'
+#    ansible_command = f'docker exec {container_id} ansible-runner run /opt/demo-runner/logs.yaml'
+    ansible_command = 'docker exec ' + container_id + ' ansible-runner run /opt/demo-runner/logs.yaml'
     subprocess.run(ansible_command, shell=True)
 
     # Stop and remove the container
@@ -14,11 +17,12 @@ def spin_container(host):
     subprocess.run(['docker', 'rm', container_id])
 
 def main():
-    inventory_file = '/opt/demo-runner/inv-env'
+    inventory_file = '/opt/demo-runner/invenv'
 
     # Read the inventory file
     with open(inventory_file, 'r') as f:
-        inventory_data = json.load(f)
+#        inventory_data = json.load(f)
+	 inventory_data = f.read()
 
     # Get the list of hosts from the inventory
     hosts = inventory_data['_meta']['hostvars'].keys()
