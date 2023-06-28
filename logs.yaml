@@ -1,0 +1,16 @@
+- name: Continuously show logs
+  hosts: all
+  gather_facts: false
+
+  tasks:
+  - name: Continuously tail log file
+    ansible.builtin.shell: tail -f /var/log/bootstrap.log
+    register: tail_output
+    changed_when: false
+    args:
+      executable: /bin/bash
+
+  - name: Display tail output
+    ansible.builtin.debug:
+      var: tail_output.stdout_lines[-10:] # Change the number as per your requirement
+
