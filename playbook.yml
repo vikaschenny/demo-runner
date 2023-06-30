@@ -1,5 +1,5 @@
 - name: Continuously show logs
-  hosts: all
+  hosts: legacy
   gather_facts: false
 
   tasks:
